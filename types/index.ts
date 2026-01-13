@@ -13,7 +13,7 @@ export interface Course {
 }
 
 export interface Problem {
-  id: string;
+  id: string; 
   module_id: string;
   question_markdown: string;
   hint_markdown: string | null;

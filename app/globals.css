@@ -1,9 +1,21 @@
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
+
+@import "tailwindcss/preflight";
 
 @import "katex/dist/katex.min.css"; /* Import Math Styles */
 
+@theme {
+  /* BRAND COLORS */
+  --color-brand: #F2C94C;
+  --color-brand-dark: #D9B443;
+  --color-brand-light: #FFF5CC;
+
+  /* SURFACE COLORS */
+  --color-surface: #333333;
+  --color-surface-subtle: #222222;
+}
+
 body {
-  @apply bg-surface-subtle text-slate-100;
+  background-color: var(--color-surface-subtle);
+  color: #f1f5f9;
 }
