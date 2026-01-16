@@ -12,18 +12,24 @@ export default async function CourseLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { courseId: string };
+  // In Next.js 15, params is a Promise
+  params: Promise<{ courseId: string }>;
 }) {
-  const { courseId } = params;
+  // FIX: You must await params in Next.js 15+
+  const { courseId } = await params;
 
-  // Fetch course details for sidebar header
+  // Verify ID format (Prevent database crashing on "favicon.ico")
+  if (!courseId || courseId.length < 10) return notFound();
+
   const { data: rawCourse, error } = await supabase
     .from('courses')
     .select('code, title')
     .eq('id', courseId)
     .single();
 
-  if (error || !rawCourse) return notFound();
+  if (error || !rawCourse) {
+    return notFound();
+  }
 
   const course = rawCourse as unknown as CourseInfo;
 
@@ -32,7 +38,6 @@ export default async function CourseLayout({
       <aside className="w-64 fixed h-full z-10 hidden md:block border-r border-white/5 bg-surface">
         <Sidebar courseId={courseId} courseCode={course.code} />
       </aside>
-
       <main className="flex-1 md:pl-64">
         {children}
       </main>
